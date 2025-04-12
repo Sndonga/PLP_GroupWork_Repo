@@ -168,3 +168,23 @@ INSERT INTO book (title, isbn, publisher_id, language_id, num_pages, publication
 -- Link books to authors
 INSERT INTO book_author (book_id, author_id) VALUES 
 (1, 1), (2, 2), (3, 3);
+
+-- Admin_privileges
+CREATE USER 'admin_john'@'localhost' IDENTIFIED BY 'AdminP@ss123';
+GRANT ALL ON bookstore_db.* TO 'admin_john'@'localhost';
+
+-- Staff (Inventory + Orders)
+CREATE USER 'staff_mary'@'localhost' IDENTIFIED BY 'StaffP@ss123';
+GRANT SELECT, INSERT, UPDATE, DELETE ON bookstore_db.* TO 'staff_mary'@'localhost';
+
+-- Reporting (Read-Only)
+CREATE USER 'reports_sam'@'localhost' IDENTIFIED BY 'ReportP@ss123';
+GRANT SELECT ON bookstore_db.* TO 'reports_sam'@'localhost';
+
+-- Optional: Web App User (Limited Write)
+CREATE USER 'webapp'@'%' IDENTIFIED BY 'WebAppP@ss123';  -- '%' allows remote connections
+GRANT SELECT, INSERT, UPDATE ON bookstoredb.book TO 'webapp'@'%';
+GRANT SELECT, INSERT ON bookstoredb.cust_order TO 'webapp'@'%';
+GRANT SELECT ON bookstoredb.* TO 'webapp'@'%';
+-- 6. Finalize
+FLUSH PRIVILEGES;
